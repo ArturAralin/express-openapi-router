@@ -2,10 +2,11 @@ import {
   OARouterOptions,
 } from './types/types';
 
-// export const pickAll = (fields, obj) => fields.reduce((acc, field) => ({
-//   ...acc,
-//   [field]: obj[field],
-// }), {});
+export function replacePathVariables(path: string): string {
+  return path.replace(/{\w+}/gi, (sub) => {
+    return `:${sub.slice(1, -1)}`;
+  });
+}
 
 export function mergeRouterOptions(
   defaultOpts: OARouterOptions,

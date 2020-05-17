@@ -16,9 +16,7 @@ import {
 
 import {
   PathObject,
-  Methods,
-  PathSchema,
-} from './types/open-api';
+} from './types/openapi/paths';
 
 function prepareResponseFns(
   responseFns: OAResponseFns,

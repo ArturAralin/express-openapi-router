@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   mergeRouterOptions,
+  replacePathVariables,
 } from './utils';
 import * as defaultResponseFns from './response-fns';
 import {
@@ -14,65 +15,53 @@ import wrapHandler from './handler';
 
 import {
   PathObject,
-  Methods,
-  PathSchema,
-} from './types/open-api';
-
-function reply<B>(
-  res: express.Response<B>,
-  data: B,
-  opts: OAReplyFnOptions = {}
-) {
-  res.status(opts.httpCode || 200);
-  res.json(data);
-}
+} from './types/openapi/paths';
 
 const DEFAULT_ROUTER_OPTS: OARouterOptions = {
   prefix: '',
   responseFns: {},
   openApi: {
+    openapi: '',
+    info: {},
     paths: {}
   },
   handlers: {},
+  strictMode: 'none',
 };
 
 const ROUTE_DEFAULT_OPTS = {
   middlewares: [],
 };
 
-const METHODS = new Set(['get', 'post', 'head']);
+type M = 'get' | 'post' | 'head';
+const METHODS: M[] = ['get', 'post', 'head'];
 
 function registerRouter(
   routerOptions: OARouterOptions,
   expressRouter: express.Router,
   pathObject: PathObject,
-  path: string,
+  prefix: string,
 ) {
   Object
     .keys(pathObject)
-    .forEach((route) => {
-      if (METHODS.has(route)) {
-        const method = route as Methods;
+    .forEach((routePath) => {
+      const pathObjectItem = pathObject[routePath];
 
-        // @ts-ignore ha ha... I love TS
-        const opts: PathSchema = pathObject[method];
-        const handler = routerOptions.handlers[opts.operationId];
+      METHODS.forEach((methodName) => {
+        const operationObject = pathObjectItem[methodName];
+        if (operationObject) {
+          const handler = routerOptions.handlers[operationObject.operationId];
 
-        if (!handler) {
-          throw new Error(`Handler for operationId="${opts.operationId}" not found`);
+          if (!handler) {
+            throw new Error(`Handler for operationId="${operationObject.operationId}" not found`);
+          }
+
+          expressRouter[methodName](
+            replacePathVariables(routePath),
+            wrapHandler(routerOptions, handler),
+          );
         }
-
-        expressRouter[method](path, wrapHandler(routerOptions, handler));
-
-        return;
-      }
-
-      registerRouter(
-        routerOptions,
-        expressRouter,
-        pathObject[route] as PathObject,
-        `${path}${route}`,
-      );
+      });
     });
 }
 

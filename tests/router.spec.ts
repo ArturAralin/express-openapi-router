@@ -31,6 +31,8 @@ describe('Controller', () => {
 
     const router = AORouter({
       openApi: {
+        openapi: '3.0.3',
+        info: {},
         paths: {
           '/test': {
             get: {

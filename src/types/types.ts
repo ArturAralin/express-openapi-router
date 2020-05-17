@@ -5,8 +5,7 @@ import {
 import {
   ParamsDictionary,
 } from "express-serve-static-core";
-import { OpenApi } from './open-api';
-
+import { OpenApi } from './openapi/index';
 
 export interface OAReplyFnOptions {
   httpCode?: number;
@@ -40,6 +39,7 @@ export interface OARouterRequiredOptions {
 export interface OARouterOptionalOptions {
   prefix?: string | null;
   responseFns?: OAResponseFns;
+  strictMode: 'none' | 'full';
 }
 
 export type OARouterOptions = OARouterRequiredOptions & Partial<OARouterOptionalOptions>;

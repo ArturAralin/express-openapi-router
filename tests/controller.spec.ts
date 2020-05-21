@@ -48,13 +48,13 @@ describe('Controller', () => {
       .request(app)
       .get('/test')
       .end((_, res) => {
-        const { args: [[params]] } = handlers.testHandler as sinon.SinonSpy;
+        const { args: [[params]] } = handlers.testHandler as sinon.SinonSpy<AOHandlerOptions[]>;
         chai.expect(params.httpOk).is.a('function');
         chai.expect(params.notFound).is.a('function');
         chai.expect(params.internalError).is.a('function');
         chai.expect(params.badRequest).is.a('function');
         chai.expect(params.payload).is.a('object');
-        // ????
+        // TODO: set object by default?
         // chai.expect(params.payload.body).is.a('');
         chai.expect(params.payload.params).is.a('object');
         chai.expect(params.payload.query).is.a('object');

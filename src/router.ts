@@ -3,13 +3,13 @@ import {
   mergeRouterOptions,
   replacePathVariables,
 } from './utils';
-import * as defaultResponseFns from './response-fns';
+// import * as defaultResponseFns from './response-fns';
 import {
-  OAReplyFnOptions,
-  OAReplyFn,
-  OAResponseFns,
+  // OAReplyFnOptions,
+  // OAReplyFn,
+  // OAResponseFns,
   OARouterOptions,
-  OARouterOptionalOptions,
+  // OARouterOptionalOptions,
 } from './types/types';
 import wrapHandler from './handler';
 
@@ -29,12 +29,9 @@ const DEFAULT_ROUTER_OPTS: OARouterOptions = {
   strictMode: 'none',
 };
 
-const ROUTE_DEFAULT_OPTS = {
-  middlewares: [],
-};
-
-type M = 'get' | 'post' | 'head';
-const METHODS: M[] = ['get', 'post', 'head'];
+// TODO: add all available methods
+type Methods = 'get' | 'post' | 'head';
+const METHODS: Methods[] = ['get', 'post', 'head'];
 
 function registerRouter(
   routerOptions: OARouterOptions,
@@ -57,7 +54,7 @@ function registerRouter(
           }
 
           expressRouter[methodName](
-            replacePathVariables(routePath),
+            `${prefix}${replacePathVariables(routePath)}`,
             wrapHandler(routerOptions, handler),
           );
         }
@@ -74,12 +71,3 @@ export function AORouter(options: OARouterOptions): express.Router {
 
   return expressRouter;
 }
-
-export function routerFactory(factoryOpts: OARouterOptions) {
-  return (opts: OARouterOptions) => {
-    const options = mergeRouterOptions(factoryOpts, opts);
-
-    return AORouter(options);
-  };
-}
-

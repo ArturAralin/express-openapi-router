@@ -1,38 +1,38 @@
 import express from 'express';
-import http from 'http';
-import {
-  mergeRouterOptions,
-} from './utils';
+// import http from 'http';
+// import {
+//   mergeRouterOptions,
+// } from './utils';
 import * as defaultResponseFns from './response-fns';
 import {
-  OAReplyFnOptions,
-  OAReplyFn,
-  OAResponseFns,
+  // OAReplyFnOptions,
+  // OAReplyFn,
+  // OAResponseFns,
   OARouterOptions,
-  OARouterOptionalOptions,
+  // OARouterOptionalOptions,
   AOHandler,
   AOHeaders,
 } from './types/types';
 
-import {
-  PathObject,
-} from './types/openapi/paths';
+// import {
+//   PathObject,
+// } from './types/openapi/paths';
 
-function prepareResponseFns(
-  responseFns: OAResponseFns,
-  res: express.Response,
-  replyFn: OAReplyFn,
-) {
-  return Object
-    .keys(responseFns)
-    .reduce((acc, key) => ({
-      ...acc,
-      [key]: responseFns[key].bind(null, res, replyFn),
-    }), {});
-}
+// function prepareResponseFns(
+//   responseFns: OAResponseFns,
+//   res: express.Response,
+//   replyFn: OAReplyFn,
+// ) {
+//   return Object
+//     .keys(responseFns)
+//     .reduce((acc, key) => ({
+//       ...acc,
+//       [key]: responseFns[key].bind(null, res, replyFn),
+//     }), {});
+// }
 
 export function handler(
-  routerOpts: OARouterOptions,
+  _routerOpts: OARouterOptions,
   fn: AOHandler,
 ) {
   return async function controller(

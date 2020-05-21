@@ -4,8 +4,6 @@
         "tslint:recommended"
     ],
     "jsRules": {},
-    "rules": {
-        // "no-unused-variable": [true, {"ignore-pattern": "^_"}]
-    },
+    "rules": {},
     "rulesDirectory": []
 }

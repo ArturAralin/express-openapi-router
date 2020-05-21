@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha -r ts-node/register tests/*.spec.ts",
+    "lint": "tslint -p .",
     "ts": "ts-node"
   },
   "keywords": [],

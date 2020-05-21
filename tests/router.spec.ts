@@ -21,4 +21,23 @@ describe('Router', () => {
 
     chai.expect(Object.getPrototypeOf(router) === express.Router).to.equals(true);
   });
+
+  it.skip('should redefine reply functions', () => {
+    AORouter({
+      responseFns: {
+        httpOk: (res, data) => {
+          res.json({
+            status: 'ok',
+            data,
+          });
+        }
+      },
+      openApi: {
+        openapi: '3.0.3',
+        info: {},
+        paths: {}
+      },
+      handlers: {},
+    });
+  });
 });

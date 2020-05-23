@@ -8,10 +8,11 @@ import {
   // OAReplyFnOptions,
   // OAReplyFn,
   // OAResponseFns,
-  OARouterOptions,
+  OARouterOptions, AOHandlerOptions,
   // OARouterOptionalOptions,
 } from './types/types';
 import wrapHandler from './handler';
+import { createValidation } from './validation';
 
 import {
   PathObject,
@@ -33,6 +34,15 @@ const DEFAULT_ROUTER_OPTS: OARouterOptions = {
 type Methods = 'get' | 'post' | 'head';
 const METHODS: Methods[] = ['get', 'post', 'head'];
 
+function createUnimplementedHandler(
+  method: string,
+  path: string
+) {
+  return ({ res }: AOHandlerOptions) => {
+    res.status(500).send(`Unimplemented ${method.toUpperCase()} ${path}`);
+  };
+}
+
 function registerRouter(
   routerOptions: OARouterOptions,
   expressRouter: express.Router,
@@ -46,15 +56,15 @@ function registerRouter(
 
       METHODS.forEach((methodName) => {
         const operationObject = pathObjectItem[methodName];
-        if (operationObject) {
-          const handler = routerOptions.handlers[operationObject.operationId];
 
-          if (!handler) {
-            throw new Error(`Handler for operationId="${operationObject.operationId}" not found`);
-          }
+        if (operationObject) {
+          const handler = routerOptions.handlers[operationObject.operationId]
+            ? routerOptions.handlers[operationObject.operationId]
+            : createUnimplementedHandler(methodName, routePath);
 
           expressRouter[methodName](
             `${prefix}${replacePathVariables(routePath)}`,
+            createValidation(operationObject),
             wrapHandler(routerOptions, handler),
           );
         }

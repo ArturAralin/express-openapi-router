@@ -16,9 +16,9 @@ export type OAReplyFn = <B>(
   opts: OAReplyFnOptions
 ) => void;
 
-export type OARawResponseFn = <B>(
-  res: Response<B>,
-  data?: B,
+export type OARawResponseFn = (
+  res: Response,
+  data?: any,
 ) => Promise<void> | void;
 
 export type OAResponseFn = <B = any>(data?: B) => Promise<void> | void;

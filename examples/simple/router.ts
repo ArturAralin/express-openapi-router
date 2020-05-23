@@ -3,6 +3,7 @@ import {
   AORouter,
   AOHandlerParams,
   AOHandlerOptions,
+  OARawResponseFn,
 } from '../../index';
 
 const app = express();
@@ -16,11 +17,21 @@ interface IndexHandlerPayload extends AOHandlerParams {
 function indexHandler({
   payload: { query },
   httpOk,
+  internalError,
 }: AOHandlerOptions<IndexHandlerPayload>) {
   httpOk(query.x + 10);
+  internalError('');
 }
 
 const router = AORouter({
+  responseFns: {
+    asianPorn: (res, data) => {
+      res.json({
+        withPixes: true,
+        data,
+      });
+    }
+  },
   openApi: {
     paths: {
       '/': {

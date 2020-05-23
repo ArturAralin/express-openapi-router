@@ -2,9 +2,9 @@ import * as express from 'express';
 import {
   OperationObject,
   ParameterObject,
-  ReferenceObject,
-  SchemaObject,
 } from './types/openapi/paths';
+import { SchemaObject } from './types/openapi/schema-object';
+import { ReferenceObject } from './types/openapi/reference-object';
 
 interface OAErrorParams {
   parameter?: string;

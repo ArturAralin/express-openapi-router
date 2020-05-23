@@ -34,9 +34,21 @@ const router = AORouter({
   },
   openApi: {
     paths: {
-      '/': {
+      '/index': {
         get: {
-          operationId: 'indexHandler'
+          operationId: 'indexHandler',
+          parameters: [
+            {
+              name: 'my_param',
+              in: 'query',
+              required: false,
+            },
+            {
+              name: 'my_param2',
+              in: 'query',
+              required: false,
+            },
+          ],
         }
       }
     }

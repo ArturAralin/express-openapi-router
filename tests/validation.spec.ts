@@ -10,7 +10,6 @@ import { appWithParameters } from './tools';
 
 chai.use(chaiHttp);
 
-
 describe('Validation', () => {
   it.only('should check test_param existing into body', () => {
     const { app, url } = appWithParameters([
